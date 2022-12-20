@@ -14,15 +14,15 @@ public class Board {
 	private String files;
 	private String uname;
 	
-	public Board(){}
+	Board(){}
 	// 게시글 작성시 사용
-	public Board(String uid, String title, String content, String files) {
+	Board(int bid, String uid, String title, String content, String files) {
 		this.uid = uid;
 		this.title = title;
 		this.content = content;
 		this.files = files;
 	}
-	public Board(int bid, String uid, String title, String content, LocalDateTime modTime, int viewCount,
+	 Board(int bid, String uid, String title, String content, LocalDateTime modTime, int viewCount,
 			int replyCount, int isDeleted, String files, String uname) {
 		this.bid = bid;
 		this.uid = uid;
