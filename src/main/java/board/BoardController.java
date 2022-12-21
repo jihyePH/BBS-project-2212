@@ -106,7 +106,7 @@ public class BoardController extends HttpServlet {
 			
 		case "delete":
 			bid = Integer.parseInt(request.getParameter("bid"));
-			response.sendRedirect("/bbs2/board/delete.jsp?bid="+ session.getAttribute("currentUserPage"));
+			response.sendRedirect("/bbs2/board/delete.jsp?bid="+ bid);
 			break;
 		
 		case "deleteConfirm":
