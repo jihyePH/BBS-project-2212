@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<% pageContext.setAttribute("newline", "\n") %>
+<%	pageContext.setAttribute("newline", "\n"); %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -23,11 +23,11 @@
             <div class="col-sm-9">
                 <h3><strong>게시글 상세 조회</strong>
                 	<span style="font-size: 0.6em;">
-                        <a href="/bbs/board/list?page=${currentBoardPage}" class="ms-5"><i class="fas fa-list-ul"></i> 목록</a>
+                        <a href="/bbs2/board/list?page=${currentBoardPage}" class="ms-5"><i class="fas fa-list-ul"></i> 목록</a>
                     
                     <!-- 본인만 수정 가능 -->
                     <c:if test="${board.uid eq uid}">
-                        <a href="/bbs/board/update?bid=${board.bid}" class="ms-3"><i class="far fa-edit"></i> 수정</a>  <!-- bid -->
+                        <a href="/bbs2/board/update?bid=${board.bid}" class="ms-3"><i class="far fa-edit"></i> 수정</a>  <!-- bid -->
                     </c:if>
                     <c:if test="${board.uid ne uid}">
                         <a href="#" class="ms-3 disabled-link"><i class="far fa-edit"></i> 수정</a>  
@@ -35,7 +35,7 @@
                     
                     <!-- 본인만 삭제 가능 -->
                     <c:if test="${board.uid eq uid}">
-                        <a href="/bbs/board/delete?bid=${board.bid}" class="ms-3"><i class="fas fa-trash-alt"></i> 삭제</a>
+                        <a href="/bbs2/board/delete?bid=${board.bid}" class="ms-3"><i class="fas fa-trash-alt"></i> 삭제</a>
                     </c:if>
                     <c:if test="${board.uid ne uid}">
                         <a href="#" class="ms-3 disabled-link"><i class="fas fa-trash-alt"></i> 삭제</a>
@@ -61,27 +61,32 @@
 
                     <div class="col-12"><hr></div>
                     <div class="col-12">
+                    <c:forEach var="reply" items="${replyList}">
+                    <c:if test="${reply.isMine eq 0}">
                         <div class="d-flex flex-row mt-1">
                             <div class="card bg-light text-dark w-75">
                                 <div class="card-body">
-                                    마리아&nbsp;&nbsp;2022-05-17 14:30:28<br>    <!-- uname, regTime-->
-                                    저도 궁금합니다.😆  <!-- content -->
+                                    ${reply.uname}&nbsp;&nbsp;${fn:replace(reply.regDate, 'T', ' ')}<br>    <!-- uname, regTime-->
+                                    ${fn:replace(reply.content, newline, '<br>')}  <!-- content -->
                                 </div>
                             </div>
                         </div>
-                        
+                        </c:if>
+                        <c:if test="${reply.isMine eq 1}">
                         <div class="d-flex flex-row-reverse mt-1">
                             <div class="card w-75">
                                 <div class="card-body text-end">
-                                    김은숙&nbsp;&nbsp;2022-05-17 14:30:28<br>    <!-- uname, regTime-->
-                                    email로 문의해 주시면 친절하게 안내해 드릴게요.😄👍😆
-                                </div>
+                                    ${reply.uname}&nbsp;&nbsp;${fn:replace(reply.regDate, 'T', ' ')}<br>    <!-- uname, regTime-->
+                                    ${fn:replace(reply.content, newline, '<br>')}  <!-- content -->
+                              </div>
                             </div>
                         </div>
+                        </c:if>
+                        </c:forEach>
                             
-                        <form class="form-inline" action="/bbs/board/reply" method="post">
-                            <input type="hidden" name="bid" value="">     <!-- bid -->
-                            <input type="hidden" name="uid" value="">     <!-- uid -->
+                        <form class="form-inline" action="/bbs2/board/reply" method="post">
+                            <input type="hidden" name="bid" value="${board.bid}">     <!-- bid -->
+                            <input type="hidden" name="uid" value="${board.uid}">     <!-- bid -->
                             <table class="table table-borderless mt-2">
                                 <tr class="d-flex">
                                     <td class="col-1 text-end">

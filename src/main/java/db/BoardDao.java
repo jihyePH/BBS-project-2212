@@ -146,4 +146,50 @@ public class BoardDao {
 			e.printStackTrace();
 		}
 	}
+
+	public void increasReplyCount(int bid) {
+		Connection conn = getConnection();
+		String sql = "UPDATE board SET replyCount=replyCount+1 WHERE bid=?;";
+		try {
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, bid);
+			
+			pStmt.executeUpdate();
+			pStmt.close(); conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteBoard(int bid) {
+		Connection conn = getConnection();
+		String sql = "UPDATE board SET isDeleted=1 WHERE bid=?;";
+		try {
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, bid);
+			
+			pStmt.executeUpdate();
+			pStmt.close(); conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+		public void updateBoard(Board b) {
+			Connection conn = getConnection();
+			String sql = "UPDATE board SET title=?, content=?, "
+					+ "modTime=NOW(), files=? WHERE bid=?;";
+			try {
+				PreparedStatement pStmt = conn.prepareStatement(sql);
+				pStmt.setString(1, b.getUid());
+				pStmt.setString(2, b.getContent());
+				pStmt.setString(3, b.getFiles());
+				pStmt.setInt(4, b.getBid());
+				
+				pStmt.executeUpdate();
+				pStmt.close(); conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
 }

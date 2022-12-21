@@ -33,27 +33,51 @@ public class ReplyDao {
 	
 	public List<Reply> getReplies(int bid) {
 		Connection conn = getConnection();
-		String sql = "SELECT b.bid, b.uid, b.title, b.modTime, "
-				+ "	b.viewCount, b.replyCount, u.uname FROM board AS b"
+		String sql = "SELECT r.rid, r.content, r.regDate, r.isMine, r.uid, r.bid, u.uname"
+				+ "	FROM reply AS r"
 				+ "	JOIN users AS u"
-				+ "	ON b.uid=u.uid"
-				+ " WHERE b.bid=?";
-				
+				+ "	ON r.uid=u.uid"
+				+ "	WHERE bid=?;";
+		List<Reply> list = new ArrayList<>();
 		try {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, bid);
 			
 			ResultSet rs = pStmt.executeQuery();
 			while (rs.next()) {
-				
+				Reply r = new Reply();
+				r.setRid(rs.getInt(1));
+				r.setContent(rs.getString(2));
+				r.setRegDate(LocalDateTime.parse(rs.getString(3).replace(" ","T")));
+				r.setIsMine(rs.getInt(4));
+				r.setUid(rs.getString(5));
+				r.setBid(rs.getInt(6));
+				r.setUname(rs.getString(7));
+				list.add(r);
 			}
 			rs.close(); pStmt.close(); conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+				e.printStackTrace();
 		}
-		return null;
+		return list;
 	}
 
+	public void insert(Reply r) {
+		Connection conn = getConnection();
+		String sql = "INSERT INTO reply(content, isMine, uid, bid) VALUES (?, ?, ?, ?);";
+		try {
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, r.getContent());
+			pStmt.setInt(2, r.getIsMine());
+			pStmt.setString(3, r.getUid());
+			pStmt.setInt(4, r.getBid());
+			
+			pStmt.executeUpdate();
+			pStmt.close(); conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	

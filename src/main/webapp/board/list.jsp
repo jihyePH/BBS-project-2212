@@ -1,22 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<%@ include file="../common/heading.jsp" %>
-       <style>
+    <%@ include file="../common/heading.jsp" %>
+    <style>
         th, td { text-align: center; }
     </style>
 </head>
 
-<body>
-	<%@ include file="../common/top.jsp" %>
+<body style="height: 2000px">
+    <%@ include file="../common/top.jsp" %>
 
     <div class="container" style="margin-top: 80px;">
         <div class="row">
-        
-        <%@ include file="../common/aside.jsp" %>
-         <!-- ================main==================== -->
+            <%@ include file="../common/aside.jsp" %>
+            
+            <!-- =================== main =================== -->
             <div class="col-sm-9">
                 <table class="table table-sm table-borderless">
                     <form action="" method="post">
@@ -24,7 +26,7 @@
                             <td class="col-6" style="text-align: left;">
                                 <h3><strong>게시글 목록</strong>
                                     <span style="font-size: 0.6em;">
-                                        <a href="#" class="ms-5"><i class="far fa-file-alt"></i> 글쓰기</a>
+                                        <a href="/bbs2/board/write" class="ms-5"><i class="far fa-file-alt"></i> 글쓰기</a>
                                     </span>
                                 </h3>
                             </td>
@@ -53,34 +55,44 @@
                         <th class="col-2">날짜/시간</th>
                         <th class="col-1">조회수</th>
                     </tr>
+                <c:forEach var="board" items="${boardList}">
                     <tr>
-                        <td>102</td>
-                        <td><a href="#">피할수 없으면 즐겨라.
-                            <span class="text-danger">[1]</span></a></td>
-                        <td>로버트 엘리엇</td>
-                        <td>09:25:38</td>
-                        <td>12</td>
+                        <td>${board.bid}</td>
+                        <td>
+                        	<a href="/bbs2/board/detail?bid=${board.bid}&uid=${board.uid}">${board.title}
+                        	<c:if test="${board.replyCount ge 1}">
+                            	<span class="text-danger">[${board.replyCount}]</span>
+                            </c:if>
+                            </a>
+                        </td>
+                        <td>${board.uname}</td>
+                        <td>
+                        <c:if test="${today eq fn:substring(board.modTime, 0, 10)}">
+                        	${fn:substring(board.modTime, 11, 19)}
+                        </c:if>
+                        <c:if test="${not (today eq fn:substring(board.modTime, 0, 10))}">
+                        	${fn:substring(board.modTime, 0, 10)}
+                        </c:if>
+                        </td>
+                        <td>${board.viewCount}</td>
                     </tr>
-                    <tr>
-                        <td>101</td>
-                        <td><a href="#">행복은 습관이다,그것을 몸에 지니라.
-                            <span class="text-danger">[2]</span></a></td>
-                        <td>허버드</td>
-                        <td>2022-12-14</td>
-                        <td>23</td>
-                    </tr>
+                </c:forEach>    
                 </table>
                 <ul class="pagination justify-content-center mt-4">
                     <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <c:forEach var="page" items="${pageList}" varStatus="loop">    
+                    <li class="page-item ${(currentBoardPage eq page) ? 'active' : ''}">
+                    	<a class="page-link" href="/bbs2/board/list?page=${page}">${page}</a>
+                    </li>
+                </c:forEach>                      
                     <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                 </ul>
             </div>
-            <!-- ================main==================== -->
+            <!-- =================== main =================== -->
+            
         </div>
     </div>
-	<%@ include file="../common/bottom.jsp" %>
+
+    <%@ include file="../common/bottom.jsp" %>
 </body>
 </html>
