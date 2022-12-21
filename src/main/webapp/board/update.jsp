@@ -18,7 +18,7 @@
             
             <!-- =================== main =================== -->
             <div class="col-sm-9">
-            	<h3><strong>게시글 수정하기</strong></h3>
+            	<h3><strong>게시글 수정</strong></h3>
             	<hr>
                 <div class="row">
 			        <div class="col-1"></div>
