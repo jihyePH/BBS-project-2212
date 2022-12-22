@@ -109,30 +109,15 @@ public class BoardController extends HttpServlet {
 			if (request.getMethod().equals("GET")) {
 					response.sendRedirect("/bbs2/board/write.jsp");
 			} else {
-				title = request.getParameter("title");
-				content = request.getParameter("content");
-				System.out.println("title"+ title);
+				/** board/fileupload로부터 전달된 데이터 읽음 
+				 * 
+				 */
 				
-				files = request.getParameter("files");
-//					String tmpPath = "c:/Temp/upload";
-//		        	Part filePart = null;
-//		        	String fileName = null;
-//		        List<String> fileList = new ArrayList<>();
-//		        for (int i=1; i<=4; i++) {
-//		            filePart = request.getPart("file" + i);		// name이 file1, file2
-//		            if (filePart == null)
-//		            	continue;
-//		            fileName = filePart.getSubmittedFileName();
-//		            System.out.println("file" + i + ": " + fileName);
-//		            if (fileName == null || fileName.equals(""))
-//		                continue;
-//		            fileList.add(fileName);
-//		            
-//		            for (Part part : request.getParts()) {
-//		                part.write(tmpPath + File.separator + fileName);
-//		            }
-//		        }
-				
+				title = (String) request.getAttribute("title");
+				content = (String) request.getAttribute("content");
+				files = (String)request.getParameter("files");
+				//System.out.println("title="+title+", files="+files);
+
 				board = new Board(sessionUid, title, content, files);
 				dao.insertBoard(board);
 				response.sendRedirect("/bbs2/board/list?p=1&f=&q=");
