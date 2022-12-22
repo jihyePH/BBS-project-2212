@@ -47,7 +47,11 @@
                     <div class="col-8">
                         <h5>${board.title}</h5>
                         <h6>글 번호: ${board.bid} | ${fn:replace(board.modTime, 'T', ' ')}</h6>
-                        <h6>첨부 파일: </h6>
+                        <h6>첨부 파일: 
+                        <c:forEach var="file" items="${fileList}">
+                        	<a href="/bbs2/board/download?file=${file}" class="me-2" download>${file}</a>
+                        </c:forEach>
+                        </h6>
                     </div>
                     <div class="col-4 text-end">
                         <h5>${board.uname}</h5>

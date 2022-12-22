@@ -22,7 +22,7 @@ import misc.JSONUtill;
 public class FileUpload extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+				throws ServletException, IOException {
 		String tmpPath = "c:/Temp/upload";
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
@@ -48,7 +48,7 @@ public class FileUpload extends HttpServlet {
 					File uploadFile = new File(tmpPath+ File.separator +  fileName);
 					i.write(uploadFile); 	// 임시 파일을 파일로 씀
 					//System.out.println(fileName);
-					fileList.add(tmpPath+ File.separator +  fileName);
+					fileList.add(fileName);
 				}
 				// 다른 타입 request일 때
 				else if (i.isFormField()) {

@@ -18,6 +18,7 @@ import javax.servlet.http.Part;
 
 import db.BoardDao;
 import db.ReplyDao;
+import misc.JSONUtill;
 
 /**
  * Servlet implementation class BoardController
@@ -25,11 +26,6 @@ import db.ReplyDao;
 @WebServlet({ "/board/list", "/board/write", "/board/update",
 			  "/board/detail", "/board/delete", "/board/deleteConfirm", 
 			  "/board/reply"})
-//@MultipartConfig(
-//	    fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-//	    maxFileSize = 1024 * 1024 * 10,      // 10 MB
-//	    maxRequestSize = 1024 * 1024 * 100   // 100 MB
-//	)
 
 public class BoardController extends HttpServlet {
 
@@ -97,6 +93,12 @@ public class BoardController extends HttpServlet {
 				dao.increaseViewCount(bid);
 			}
 			board = dao.getBoardDetail(bid);
+			String jsonFiles = board.getFiles();
+			if (!(jsonFiles == null || jsonFiles.equals(""))) {
+				JSONUtill json = new JSONUtill();
+				List<String> fileList = json.parse(jsonFiles);
+				request.setAttribute("fileList", fileList);
+			}
 			request.setAttribute("board", board);
 			List<Reply> replyList = replyDao.getReplies(bid);
 			request.setAttribute("replyList", replyList);
@@ -115,7 +117,7 @@ public class BoardController extends HttpServlet {
 				
 				title = (String) request.getAttribute("title");
 				content = (String) request.getAttribute("content");
-				files = (String)request.getParameter("files");
+				files = (String) request.getAttribute("files");
 				//System.out.println("title="+title+", files="+files);
 
 				board = new Board(sessionUid, title, content, files);
