@@ -23,7 +23,7 @@
                 <div class="row">
 			        <div class="col-1"></div>
 			        <div class="col-10">
-			            <form action="/bbs2/board/write" method="post">
+			         <!--    <form action="/bbs2/board/write" method="post"> -->
 			            <form action="/bbs2/board/upload" method="post" enctype="multipart/form-data">
 			                <table class="table table-borderless">
 			                    <tr>

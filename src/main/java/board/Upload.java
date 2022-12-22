@@ -37,17 +37,17 @@ public class Upload extends HttpServlet {
         System.out.println("param: " + param);
         
         String fileName = null;
-        Part filePart = request.getPart("file");
-        if (filePart == null) {
-        	System.out.println("No files uploaded.");
-        } else {
-        	fileName = filePart.getSubmittedFileName();
-        	System.out.println("fileName: " + fileName);
-        	
-        	for (Part part : request.getParts()) {
-                part.write(tmpPath + File.separator + fileName);
-            }
-        }
+//        Part filePart = request.getPart("file");
+//        if (filePart == null) {
+//        	System.out.println("No files uploaded.");
+//        } else {
+//        	fileName = filePart.getSubmittedFileName();
+//        	System.out.println("fileName: " + fileName);
+//        	
+//        	for (Part part : request.getParts()) {
+//                part.write(tmpPath + File.separator + fileName);
+//            }
+//        }
         	
         	Part filePart = null;
 	        List<String> fileList = new ArrayList<>();

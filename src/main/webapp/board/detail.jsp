@@ -23,7 +23,7 @@
             <div class="col-sm-9">
                 <h3><strong>게시글 상세 조회</strong>
                 	<span style="font-size: 0.6em;">
-                        <a href="/bbs2/board/list?page=${currentBoardPage}" class="ms-5"><i class="fas fa-list-ul"></i> 목록</a>
+                        <a href="/bbs2/board/list?p=${currentBoardPage}&f=&q=" class="ms-5"><i class="fas fa-list-ul"></i> 목록</a>
                     
                     <!-- 본인만 수정 가능 -->
                     <c:if test="${board.uid eq uid}">
