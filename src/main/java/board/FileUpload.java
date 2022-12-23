@@ -16,16 +16,17 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import misc.JSONUtill;
+import misc.JSONUtil;
 
 @WebServlet("/board/fileupload")
 public class FileUpload extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-				throws ServletException, IOException {
+			throws ServletException, IOException {
 		String tmpPath = "c:/Temp/upload";
 		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
+		String dest = request.getParameter("dest");
+		//System.out.println(dest);
 
 		/** 업로드된 파일을 저장할 저장소 */
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -40,27 +41,27 @@ public class FileUpload extends HttpServlet {
 		try {
 			List<FileItem> items = fu.parseRequest(request);
 			List<String> fileList = new ArrayList<>();
+			List<String> removeFiles = new ArrayList<>();
 			/** 파일 저장 */
 			for (FileItem i : items) {
 				// 첨부 파일일 때
 				if (!i.isFormField() && i.getSize() > 0) {
 					String fileName = i.getName();
-					File uploadFile = new File(tmpPath+ File.separator +  fileName);
+					File uploadFile = new File(tmpPath + File.separator + fileName);
 					i.write(uploadFile); 	// 임시 파일을 파일로 씀
-					//System.out.println(fileName);
+					// System.out.println(fileName);
 					fileList.add(fileName);
 				}
 				// 다른 타입 request일 때
 				else if (i.isFormField()) {
-					//System.out.println(i.getContentType());
 					request.setAttribute(i.getFieldName(), i.getString("UTF-8"));
-					//System.out.println(i.getFieldName() + i.getString("UTF-8"));
 				}
 			}
-			JSONUtill json = new JSONUtill();
+			
+			JSONUtil json = new JSONUtil();
 			String jsonList = json.stringify(fileList);
 			request.setAttribute("files", jsonList);
-			RequestDispatcher rd = request.getRequestDispatcher("/board/write");
+			RequestDispatcher rd = request.getRequestDispatcher("/board/" + dest);
 			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();

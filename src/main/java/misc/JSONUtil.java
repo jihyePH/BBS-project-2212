@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class JSONUtill {
+public class JSONUtil {
 	public String stringify(List<String> list) {
 		JSONObject obj = new JSONObject();
 		obj.put("list", list);

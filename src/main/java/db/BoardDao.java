@@ -185,7 +185,7 @@ public class BoardDao {
 					+ "modTime=NOW(), files=? WHERE bid=?;";
 			try {
 				PreparedStatement pStmt = conn.prepareStatement(sql);
-				pStmt.setString(1, b.getUid());
+				pStmt.setString(1, b.getTitle());
 				pStmt.setString(2, b.getContent());
 				pStmt.setString(3, b.getFiles());
 				pStmt.setInt(4, b.getBid());
